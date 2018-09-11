@@ -1,5 +1,8 @@
 User:
-  name: Sean
+  name:
+    function(): faker.fake
+    args:
+      - "{{name.lastName}}, {{name.firstName}} {{name.suffix}}"
   alive: true
   foo: null
   happiness: 9.8
@@ -7,8 +10,9 @@ User:
     name: Jori
   age:
     function(): faker.random.number
-    min: -92
-    max: 20
+    args:
+      - min: 50
+        max: 52
   friends:
     - name: Jori
       age: 47

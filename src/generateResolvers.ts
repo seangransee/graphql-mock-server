@@ -19,14 +19,14 @@ function handleFunction(declaredFn: DeclaredFunction): Scalar {
       return null
   }
 
-  const fn: (options: Arguments) => Scalar = fnName
+  const fn: (...args: Arguments) => Scalar = fnName
     .slice(1)
     .reduce((f: any, key: string) => {
       return f[key]
     }, library)
 
   if (fn !== undefined) {
-    return fn(<Arguments>declaredFn)
+    return fn(...declaredFn.args)
   }
 
   return null

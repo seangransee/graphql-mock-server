@@ -11,7 +11,7 @@ export interface ObjectTypeMock {
 }
 export interface DeclaredFunction {
   "function()": string
-  [arg: string]: Scalar
+  args: Arguments
 }
 export type MockValue =
   | ObjectTypeMock
@@ -19,6 +19,4 @@ export type MockValue =
   | DeclaredFunction
   | Scalar
 
-export interface Arguments {
-  [arg: string]: Scalar
-}
+export type Arguments = (object | Scalar)[]
