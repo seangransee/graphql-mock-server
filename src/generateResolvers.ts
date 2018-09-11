@@ -34,26 +34,22 @@ function handleFunction(declaredFn: DeclaredFunction): Scalar {
   return null
 }
 
-export function generateResolvers(mock: DeclaredFunction): Scalar
-export function generateResolvers(mock: ObjectTypeMock): ObjectType
-export function generateResolvers(mock: ObjectTypeMock[]): ObjectType[]
-export function generateResolvers(mock: MockValue): ResolverValue {
-  return Object.keys(<ObjectTypeMock>mock).reduce(
-    (resolver: ObjectType, field: string) => {
-      const mockValue = (<ObjectTypeMock>mock)[field]
+export function generateResolvers(mock: ObjectTypeMock): ObjectType {
+  const type: ObjectType = {}
+  for (const field in <ObjectTypeMock>mock) {
+    const mockValue = (<ObjectTypeMock>mock)[field]
 
-      if (typeof mockValue !== "object" || mockValue === null) {
-        resolver[field] = () => <Scalar>mockValue
-      } else if (Array.isArray(mockValue)) {
-        resolver[field] = () => mockValue.map(val => generateResolvers(val))
-      } else if ((<DeclaredFunction>mockValue).function) {
-        resolver[field] = () => handleFunction(<DeclaredFunction>mockValue)
-      } else {
-        resolver[field] = () => generateResolvers(<ObjectTypeMock>mockValue)
-      }
+    if (typeof mockValue !== "object" || mockValue === null) {
+      type[field] = () => <Scalar>mockValue
+    } else if (Array.isArray(mockValue)) {
+      type[field] = () =>
+        mockValue.map(val => generateResolvers(<ObjectTypeMock>val))
+    } else if (mockValue.function) {
+      type[field] = () => handleFunction(<DeclaredFunction>mockValue)
+    } else {
+      type[field] = () => generateResolvers(<ObjectTypeMock>mockValue)
+    }
+  }
 
-      return resolver
-    },
-    {}
-  )
+  return type
 }
