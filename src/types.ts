@@ -10,7 +10,7 @@ export interface ObjectTypeMock {
   [field: string]: MockValue
 }
 export interface DeclaredFunction {
-  function: string
+  "function()": string
   [arg: string]: Scalar
 }
 export type MockValue =

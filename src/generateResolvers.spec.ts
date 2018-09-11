@@ -21,7 +21,7 @@ describe("generateResolvers", () => {
   })
   it("works with a faker function", () => {
     const resolvers = generateResolvers({
-      age: { function: "faker.random.number", min: 51, max: 51 }
+      age: { "function()": "faker.random.number", min: 51, max: 51 }
     })
     expect(resolvers.age()).toEqual(51)
   })

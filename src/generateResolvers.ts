@@ -1,8 +1,6 @@
 import {
   ObjectTypeMock,
   ObjectType,
-  ResolverValue,
-  MockValue,
   Scalar,
   DeclaredFunction,
   Arguments
@@ -11,7 +9,7 @@ import {
 import * as faker from "faker"
 
 function handleFunction(declaredFn: DeclaredFunction): Scalar {
-  const fnName = declaredFn.function.split(".")
+  const fnName = declaredFn["function()"].split(".")
   let library: object
   switch (fnName[0]) {
     case "faker":
@@ -44,7 +42,7 @@ export function generateResolvers(mock: ObjectTypeMock): ObjectType {
     } else if (Array.isArray(mockValue)) {
       type[field] = () =>
         mockValue.map(val => generateResolvers(<ObjectTypeMock>val))
-    } else if (mockValue.function) {
+    } else if (mockValue["function()"]) {
       type[field] = () => handleFunction(<DeclaredFunction>mockValue)
     } else {
       type[field] = () => generateResolvers(<ObjectTypeMock>mockValue)

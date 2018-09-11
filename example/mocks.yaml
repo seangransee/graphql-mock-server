@@ -6,7 +6,7 @@ User:
   bff:
     name: Jori
   age:
-    function: faker.random.number
+    function(): faker.random.number
     min: -92
     max: 20
   friends:
