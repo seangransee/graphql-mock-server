@@ -1,0 +1,17 @@
+type User {
+  name: String
+  foo: String
+  age: Int
+  alive: Boolean
+  friends: [User!]
+  bff: User
+}
+
+type Query {
+  user: User
+  dog: Dog
+}
+
+type Dog {
+  breed: String
+}

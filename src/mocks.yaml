@@ -1,0 +1,9 @@
+User:
+  name: Michael
+  friends:
+    - name: Sean
+    - name: Colin
+
+Query:
+  user:
+    name: Sean

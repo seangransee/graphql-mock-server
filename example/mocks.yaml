@@ -1,0 +1,17 @@
+User:
+  name: Sean
+  age: 51
+  bff:
+    name: Jori
+  # name: Sean
+  # age:
+  #   function: faker.random.number
+  #   min: -92
+  #   max: 20
+  # friends:
+  #   - name: Jori
+  #     age: 47
+  #   - name: Colin
+
+Dog:
+  breed: Maltese
