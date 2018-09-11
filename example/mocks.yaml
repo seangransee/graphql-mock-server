@@ -1,17 +1,22 @@
 User:
   name: Sean
-  age: 51
+  alive: true
+  happiness: 9.8
   bff:
     name: Jori
-  # name: Sean
-  # age:
-  #   function: faker.random.number
-  #   min: -92
-  #   max: 20
-  # friends:
-  #   - name: Jori
-  #     age: 47
-  #   - name: Colin
+  age:
+    function: faker.random.number
+    min: -92
+    max: 20
+  friends:
+    - name: Jori
+      age: 47
+    - name: Colin
 
 Dog:
   breed: Maltese
+
+Query:
+  user:
+    bff:
+      name: Colin

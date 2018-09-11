@@ -34,17 +34,11 @@ function handleFunction(declaredFn: DeclaredFunction): Scalar {
   return null
 }
 
-export function generateResolvers(mock: string): string
-export function generateResolvers(mock: number): number
 export function generateResolvers(mock: DeclaredFunction): Scalar | ObjectType[]
 export function generateResolvers(mock: ObjectTypeMock): ObjectType
 export function generateResolvers(mock: ObjectTypeMock[]): ObjectType[]
 export function generateResolvers(mock: MockValue): ResolverValue {
   switch (typeof mock) {
-    case "number":
-      return <number>mock
-    case "string":
-      return <string>mock
     case "object":
       if ((<DeclaredFunction>mock).function) {
         return handleFunction(<DeclaredFunction>mock)
@@ -55,10 +49,13 @@ export function generateResolvers(mock: MockValue): ResolverValue {
       const mockValue = (<ObjectTypeMock>mock)[field]
       switch (typeof mockValue) {
         case "number":
-          resolver[field] = () => generateResolvers(<number>mockValue)
+          resolver[field] = () => <number>mockValue
           break
         case "string":
-          resolver[field] = () => generateResolvers(<string>mockValue)
+          resolver[field] = () => <string>mockValue
+          break
+        case "boolean":
+          resolver[field] = () => <boolean>mockValue
           break
         case "object":
           if (Array.isArray(mockValue)) {
@@ -67,7 +64,6 @@ export function generateResolvers(mock: MockValue): ResolverValue {
                 return generateResolvers(val)
               })
           } else {
-            // console.log(field)
             resolver[field] = () => generateResolvers(<ObjectTypeMock>mockValue)
           }
           break

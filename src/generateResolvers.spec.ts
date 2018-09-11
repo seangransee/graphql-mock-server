@@ -3,12 +3,6 @@ import { ObjectType, Scalar, Resolver } from "./types"
 import * as fs from "fs"
 
 describe("generateResolvers", () => {
-  it("works with a string", () => {
-    expect(generateResolvers("foo")).toEqual("foo")
-  })
-  it("works with a number", () => {
-    expect(generateResolvers(51)).toEqual(51)
-  })
   it("works with a mock", () => {
     expect(generateResolvers({ name: "Sean" }).name()).toEqual("Sean")
   })

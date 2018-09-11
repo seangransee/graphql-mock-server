@@ -5,7 +5,6 @@ type User {
   alive: Boolean
   friends: [User!]
   bff: User
-  happiness: Float
 }
 
 type Query {
