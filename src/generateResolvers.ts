@@ -41,24 +41,17 @@ export function generateResolvers(mock: MockValue): ResolverValue {
   return Object.keys(<ObjectTypeMock>mock).reduce(
     (resolver: ObjectType, field: string) => {
       const mockValue = (<ObjectTypeMock>mock)[field]
-      console.log(typeof mockValue, mockValue)
-      switch (typeof mockValue) {
-        case "number":
-        case "string":
-        case "boolean":
-          resolver[field] = () => <Scalar>mockValue
-          break
-        case "object":
-          if (mockValue === null) {
-            resolver[field] = () => null
-          } else if (Array.isArray(mockValue)) {
-            resolver[field] = () => mockValue.map(val => generateResolvers(val))
-          } else if ((<DeclaredFunction>mockValue).function) {
-            resolver[field] = () => handleFunction(<DeclaredFunction>mockValue)
-          } else {
-            resolver[field] = () => generateResolvers(<ObjectTypeMock>mockValue)
-          }
+
+      if (typeof mockValue !== "object" || mockValue === null) {
+        resolver[field] = () => <Scalar>mockValue
+      } else if (Array.isArray(mockValue)) {
+        resolver[field] = () => mockValue.map(val => generateResolvers(val))
+      } else if ((<DeclaredFunction>mockValue).function) {
+        resolver[field] = () => handleFunction(<DeclaredFunction>mockValue)
+      } else {
+        resolver[field] = () => generateResolvers(<ObjectTypeMock>mockValue)
       }
+
       return resolver
     },
     {}
