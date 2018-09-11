@@ -34,39 +34,30 @@ function handleFunction(declaredFn: DeclaredFunction): Scalar {
   return null
 }
 
-export function generateResolvers(mock: DeclaredFunction): Scalar | ObjectType[]
+export function generateResolvers(mock: DeclaredFunction): Scalar
 export function generateResolvers(mock: ObjectTypeMock): ObjectType
 export function generateResolvers(mock: ObjectTypeMock[]): ObjectType[]
 export function generateResolvers(mock: MockValue): ResolverValue {
-  switch (typeof mock) {
-    case "object":
-      if ((<DeclaredFunction>mock).function) {
-        return handleFunction(<DeclaredFunction>mock)
-      }
-  }
   return Object.keys(<ObjectTypeMock>mock).reduce(
     (resolver: ObjectType, field: string) => {
       const mockValue = (<ObjectTypeMock>mock)[field]
+      console.log(typeof mockValue, mockValue)
       switch (typeof mockValue) {
         case "number":
-          resolver[field] = () => <number>mockValue
-          break
         case "string":
-          resolver[field] = () => <string>mockValue
-          break
         case "boolean":
-          resolver[field] = () => <boolean>mockValue
+          resolver[field] = () => <Scalar>mockValue
           break
         case "object":
-          if (Array.isArray(mockValue)) {
-            resolver[field] = () =>
-              mockValue.map((val, i) => {
-                return generateResolvers(val)
-              })
+          if (mockValue === null) {
+            resolver[field] = () => null
+          } else if (Array.isArray(mockValue)) {
+            resolver[field] = () => mockValue.map(val => generateResolvers(val))
+          } else if ((<DeclaredFunction>mockValue).function) {
+            resolver[field] = () => handleFunction(<DeclaredFunction>mockValue)
           } else {
             resolver[field] = () => generateResolvers(<ObjectTypeMock>mockValue)
           }
-          break
       }
       return resolver
     },

@@ -1,6 +1,7 @@
 User:
   name: Sean
   alive: true
+  foo: null
   happiness: 9.8
   bff:
     name: Jori
