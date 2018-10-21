@@ -22,13 +22,13 @@ const server = http.createServer(app)
 server.listen("8000")
 console.log("GraphQL endpoint running in container at /graphql on port 8000.")
 
+const mocks = generateMockFunctions(fs.readFileSync("mocks.yaml", "utf8"))
+
 const generateResponse = ({ query, variables }) => {
   const schemaString = fs.readFileSync("./schema.graphql", "utf8")
   const schema = makeExecutableSchema({
     typeDefs: schemaString
   })
-
-  const mocks = generateMockFunctions(fs.readFileSync("mocks.yaml", "utf8"))
 
   addMockFunctionsToSchema({ schema, mocks })
   return graphql({

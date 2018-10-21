@@ -9,24 +9,28 @@ import {
 import * as faker from "faker"
 
 function handleFunction(declaredFn: DeclaredFunction): Scalar {
-  const fnName = declaredFn["function()"].split(".")
+  const fnName = declaredFn["function()"]
+  const fnNameParsed = fnName.split(".")
+  const libraryName = fnNameParsed[0]
   let library: object
-  switch (fnName[0]) {
+  switch (libraryName) {
     case "faker":
       library = faker
       break
     default:
-      return null
+      throw Error(`${libraryName} is not a compatible library.`)
   }
 
-  const fn: (...args: Arguments) => Scalar = fnName
+  const fn: (...args: Arguments) => Scalar = fnNameParsed
     .slice(1)
     .reduce((f: any, key: string) => {
       return f[key]
     }, library)
 
+  const args = declaredFn.args || []
+
   if (fn !== undefined) {
-    return fn(...declaredFn.args)
+    return fn(...args)
   }
 
   return null
@@ -48,6 +52,7 @@ export function generateResolvers(mock: ObjectTypeMock): ObjectType {
     } else {
       objectType[field] = () => generateResolvers(<ObjectTypeMock>mockValue)
     }
+    objectType[field]()
   }
 
   return objectType

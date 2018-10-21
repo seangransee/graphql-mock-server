@@ -2,7 +2,7 @@ User:
   name:
     function(): faker.fake
     args:
-      - "{{name.lastName}}, {{name.firstName}} {{name.suffix}}"
+      - "{{name.firstName}} {{name.lastName}}"
   alive: true
   foo: null
   happiness: 9.8
@@ -10,9 +10,9 @@ User:
     name: Jori
   age:
     function(): faker.random.number
-    args:
-      - min: 50
-        max: 52
+    # args:
+    #   - min: 50
+    #     max: 52
   friends:
     - name: Jori
       age: 47
