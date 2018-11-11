@@ -36,7 +36,7 @@ function handleFunction(declaredFn: DeclaredFunction): Scalar {
   return null
 }
 
-export function generateResolvers(mock: ObjectTypeMock): ObjectType {
+export function generateMockFunctions(mock: ObjectTypeMock): ObjectType {
   const objectType: ObjectType = {}
 
   for (const field in <ObjectTypeMock>mock) {
@@ -46,11 +46,11 @@ export function generateResolvers(mock: ObjectTypeMock): ObjectType {
       objectType[field] = () => <Scalar>mockValue
     } else if (Array.isArray(mockValue)) {
       objectType[field] = () =>
-        mockValue.map(val => generateResolvers(<ObjectTypeMock>val))
+        mockValue.map(val => generateMockFunctions(<ObjectTypeMock>val))
     } else if (mockValue["function()"]) {
       objectType[field] = () => handleFunction(<DeclaredFunction>mockValue)
     } else {
-      objectType[field] = () => generateResolvers(<ObjectTypeMock>mockValue)
+      objectType[field] = () => generateMockFunctions(<ObjectTypeMock>mockValue)
     }
     objectType[field]()
   }

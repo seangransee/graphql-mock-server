@@ -1,4 +1,4 @@
-import { generateMockFunctions } from "."
+import { generateMockFunctionsFromYaml } from "."
 import { ObjectType, ObjectTypeMock, Resolver } from "./types"
 
 describe("generateMockFunctions", () => {
@@ -8,7 +8,7 @@ describe("generateMockFunctions", () => {
         name: Nicolas Cage
     `
 
-    const User = <ObjectType>generateMockFunctions(yaml).User()
+    const User = <ObjectType>generateMockFunctionsFromYaml(yaml).User()
     expect(User.name()).toEqual("Nicolas Cage")
   })
 })

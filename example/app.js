@@ -13,7 +13,7 @@ const cors = require("cors")
 const fs = require("fs")
 const http = require("http")
 const url = require("url")
-const { generateMockFunctions } = require("../lib/index")
+const { generateMockFunctionsFromYaml } = require("../lib/index")
 
 const app = express()
 app.use(bodyParser.json())
@@ -22,7 +22,9 @@ const server = http.createServer(app)
 server.listen("8000")
 console.log("GraphQL endpoint running in container at /graphql on port 8000.")
 
-const mocks = generateMockFunctions(fs.readFileSync("mocks.yaml", "utf8"))
+const mocks = generateMockFunctionsFromYaml(
+  fs.readFileSync("mocks.yaml", "utf8")
+)
 
 const generateResponse = ({ query, variables }) => {
   const schemaString = fs.readFileSync("./schema.graphql", "utf8")
