@@ -6,7 +6,7 @@
     "outDir": "lib",
     "strict": true,
     "moduleResolution": "node",
-    "lib": ["es6", "dom", "esnext.asynciterable"],
+    "lib": ["es7", "dom", "esnext.asynciterable"],
     "typeRoots": ["node_modules/@types"]
   },
   "include": ["src/**/*"]
