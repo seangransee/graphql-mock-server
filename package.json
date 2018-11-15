@@ -38,6 +38,7 @@
     "testRegex": "/src/.*\\.spec\\.ts$"
   },
   "dependencies": {
+    "casual": "^1.5.19",
     "faker": "^4.1.0",
     "js-yaml": "^3.12.0"
   }

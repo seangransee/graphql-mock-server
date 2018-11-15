@@ -30,7 +30,7 @@ describe("generateMockFunctionsFromYaml", () => {
     expect(friend.name()).toEqual("Dwight Schrute")
   })
 
-  it("handles lists", () => {
+  it("handles lists of objects", () => {
     const yaml = `
       friends:
         - name: Michael Scott
@@ -42,6 +42,18 @@ describe("generateMockFunctionsFromYaml", () => {
       "Michael Scott",
       "Dwight Schrute"
     ])
+  })
+
+  it("handles lists of scalars", () => {
+    const yaml = `
+      numbers:
+        - 10
+        - 20
+        - 30
+    `
+
+    const numbers = <ObjectType[]>generateMockFunctionsFromYaml(yaml).numbers()
+    expect(numbers).toEqual([10, 20, 30])
   })
 
   it("throws an error generating resolvers with an invalid library", () => {
@@ -125,7 +137,30 @@ describe("generateMockFunctionsFromYaml", () => {
             - Dwight
     `
     const resolvers = generateMockFunctionsFromYaml(yaml)
-    const name = <string>resolvers.name()
-    expect(["Michael", "Dwight"].includes(name)).toBeTruthy()
+    const name = resolvers.name()
+    expect(["Michael", "Dwight"].includes(<string>name)).toBeTruthy()
+  })
+
+  it("works with a casual generator that's not a function", () => {
+    const yaml = `
+      bool:
+        function(): casual.coin_flip
+    `
+
+    const resolvers = generateMockFunctionsFromYaml(yaml)
+    const bool = resolvers.bool()
+    expect(typeof bool).toBe("boolean")
+  })
+
+  it("works with a casual function", () => {
+    const yaml = `
+      words:
+        function(): casual.array_of_words
+        args: 5
+    `
+
+    const resolvers = generateMockFunctionsFromYaml(yaml)
+    const words = <string[]>resolvers.words()
+    expect((<string[]>words).length).toBe(5)
   })
 })

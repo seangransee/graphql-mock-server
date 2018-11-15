@@ -4,7 +4,7 @@ export interface ObjectType {
   [field: string]: Resolver
 }
 export type Resolver = () => ResolverValue
-export type ResolverValue = ObjectType | ObjectType[] | Scalar
+export type ResolverValue = ObjectType | ObjectType[] | Scalar | Scalar[]
 
 export interface ObjectTypeMock {
   [field: string]: MockValue
@@ -18,5 +18,6 @@ export type MockValue =
   | ObjectTypeMock[]
   | DeclaredFunction
   | Scalar
+  | Scalar[]
 
 export type Arguments = (object | Scalar)[]
