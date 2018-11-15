@@ -69,6 +69,18 @@ describe("generateMockFunctionsFromYaml", () => {
     const yaml = `
       age:
         function(): faker.random.number
+        args: 10
+    `
+
+    const resolvers = generateMockFunctionsFromYaml(yaml)
+    const age = resolvers.age()
+    expect(age).toBeLessThanOrEqual(10)
+  })
+
+  it("works with a faker function with a scalar argument provided in a list", () => {
+    const yaml = `
+      age:
+        function(): faker.random.number
         args:
           - 10
     `

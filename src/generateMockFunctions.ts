@@ -27,13 +27,14 @@ function handleFunction(declaredFn: DeclaredFunction): Scalar {
       return f[key]
     }, library)
 
-  const args = declaredFn.args || []
-
-  if (fn !== undefined) {
-    return fn(...args)
+  switch (typeof declaredFn.args) {
+    case "object":
+      return fn(...declaredFn.args)
+    case "undefined":
+      return fn()
+    default:
+      return fn(declaredFn.args)
   }
-
-  return null
 }
 
 export function generateMockFunctions(mock: ObjectTypeMock): ObjectType {
