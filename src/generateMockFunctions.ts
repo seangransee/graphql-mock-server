@@ -27,8 +27,12 @@ function handleFunction(declaredFn: DeclaredFunction): Scalar {
       return f[key]
     }, library)
 
+  if (!fn) {
+    throw Error(`${fnName} is not a valid function.`)
+  }
+
   switch (typeof declaredFn.args) {
-    case "object":
+    case "object": // array
       return fn(...declaredFn.args)
     case "undefined":
       return fn()

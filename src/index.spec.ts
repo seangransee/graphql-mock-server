@@ -55,6 +55,17 @@ describe("generateMockFunctionsFromYaml", () => {
     )
   })
 
+  it("throws an error generating resolvers with an invalid function", () => {
+    const yaml = `
+      age:
+        function(): faker.invalidFunction
+    `
+
+    expect(() => generateMockFunctionsFromYaml(yaml)).toThrow(
+      Error("faker.invalidFunction is not a valid function.")
+    )
+  })
+
   it("works with a faker function without arguments", () => {
     const yaml = `
       age:
