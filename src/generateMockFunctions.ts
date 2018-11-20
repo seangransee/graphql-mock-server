@@ -25,14 +25,15 @@ function handleFunction(declaredFn: DeclaredFunction): Scalar {
       throw Error(`${libraryName} is not a compatible library.`)
   }
 
-  const fn: (...args: Arguments) => Scalar = fnNameParsed
-    .slice(1)
-    .reduce((f: any, key: string) => {
-      return f[key]
-    }, library)
+  const functionOrValue:
+    | ((...args: Arguments) => Scalar)
+    | Scalar = fnNameParsed.slice(1).reduce((f: any, key: string) => {
+    return f[key]
+  }, library)
 
-  switch (typeof fn) {
+  switch (typeof functionOrValue) {
     case "function":
+      const fn = <Function>functionOrValue
       switch (typeof declaredFn.args) {
         case "object": // array
           return fn(...declaredFn.args)
@@ -44,7 +45,7 @@ function handleFunction(declaredFn: DeclaredFunction): Scalar {
     case "undefined":
       throw Error(`${fnName} is not a valid function.`)
     default:
-      return fn
+      return <Scalar>functionOrValue
   }
 }
 
