@@ -78,7 +78,7 @@ describe("generateMockFunctionsFromYaml", () => {
     )
   })
 
-  it("works with a faker function without arguments", () => {
+  it("handles a faker function without arguments", () => {
     const yaml = `
       age:
         function(): faker.random.number
@@ -88,7 +88,7 @@ describe("generateMockFunctionsFromYaml", () => {
     expect(typeof resolvers.age()).toBe("number")
   })
 
-  it("works with a faker function with a scalar argument", () => {
+  it("handles a faker function with a scalar argument", () => {
     const yaml = `
       age:
         function(): faker.random.number
@@ -100,7 +100,7 @@ describe("generateMockFunctionsFromYaml", () => {
     expect(age).toBeLessThanOrEqual(10)
   })
 
-  it("works with a faker function with a scalar argument provided in a list", () => {
+  it("handles a faker function with a scalar argument provided in a list", () => {
     const yaml = `
       age:
         function(): faker.random.number
@@ -113,7 +113,7 @@ describe("generateMockFunctionsFromYaml", () => {
     expect(age).toBeLessThanOrEqual(10)
   })
 
-  it("works with a faker function with an object argument", () => {
+  it("handles a faker function with an object argument", () => {
     const yaml = `
       age:
         function(): faker.random.number
@@ -128,7 +128,7 @@ describe("generateMockFunctionsFromYaml", () => {
     expect(age).toBeLessThanOrEqual(53)
   })
 
-  it("works with a faker function with an array argument", () => {
+  it("handles a faker function with an array argument", () => {
     const yaml = `
       name:
         function(): faker.random.arrayElement
@@ -141,7 +141,7 @@ describe("generateMockFunctionsFromYaml", () => {
     expect(["Michael", "Dwight"].includes(<string>name)).toBeTruthy()
   })
 
-  it("works with a casual generator that's not a function", () => {
+  it("handles a casual generator that's not a function", () => {
     const yaml = `
       bool:
         function(): casual.coin_flip
@@ -152,7 +152,7 @@ describe("generateMockFunctionsFromYaml", () => {
     expect(typeof bool).toBe("boolean")
   })
 
-  it("works with a casual function", () => {
+  it("handles a casual function", () => {
     const yaml = `
       words:
         function(): casual.array_of_words
